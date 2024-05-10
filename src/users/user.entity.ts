@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  AfterInsert,
+  AfterRemove,
+  AfterUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -20,4 +27,17 @@ export class User {
   })
   @Column()
   password: string;
+
+  @AfterInsert()
+  logInsert() {
+    console.log('Inserted user with id', this.id);
+  }
+  @AfterUpdate()
+  logUpdateAfterUpdate() {
+    console.log('Updated user with id', this.id);
+  }
+  @AfterRemove()
+  logRemoveAfterRemove() {
+    console.log('Removed user with id', this.id);
+  }
 }
