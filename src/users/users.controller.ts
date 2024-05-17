@@ -8,7 +8,6 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { UsersService } from './users.service';
@@ -19,12 +18,18 @@ import {
 } from '@nestjs/swagger';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user-dto';
-import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { UserDto } from './dtos/user.dto';
+import { AuthService } from './auth.service';
 
 @ApiTags('User')
 @Controller('auth')
+@Serialize(UserDto)
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Post('/signup')
   @ApiCreatedResponse({
@@ -35,9 +40,13 @@ export class UsersController {
     description: 'User create failed!',
   })
   createUser(@Body() body: CreateUserDto) {
-    this.userService.create(body.email, body.password);
+    this.authService.signUp(body.email, body.password);
   }
-  @UseInterceptors(SerializeInterceptor)
+  @Post('/signIn')
+  signIn(@Body() body: CreateUserDto) {
+    return this.authService.signIn(body.email, body.password);
+  }
+
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     const user = await this.userService.findOne(parseInt(id));
