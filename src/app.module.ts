@@ -5,19 +5,39 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { User } from './users/user.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      database: 'ecom_db',
-      port: 3306,
-      username: 'root',
-      password: 'qwerty123',
-      entities: [User],
-      host: 'localhost',
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'mysql',
+          database: config.get<string>('DB_NAME'),
+          port: 3306,
+          username: 'root',
+          password: 'qwerty123',
+          entities: [User],
+          host: 'localhost',
+          synchronize: true,
+        };
+      },
+    }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql',
+    //   database: 'ecom_db',
+    //   port: 3306,
+    //   username: 'root',
+    //   password: 'qwerty123',
+    //   entities: [User],
+    //   host: 'localhost',
+    //   synchronize: true,
+    // }),
     UsersModule,
     ProductsModule,
   ],
