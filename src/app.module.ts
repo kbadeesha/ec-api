@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { User } from './users/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Product } from './products/products.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           port: 3306,
           username: 'root',
           password: 'qwerty123',
-          entities: [User],
+          entities: [User, Product],
           host: 'localhost',
           synchronize: true,
         };
