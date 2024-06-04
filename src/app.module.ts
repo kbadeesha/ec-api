@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { ProductsModule } from './products/products.module';
-import { User } from './users/user.entity';
+import { UsersModule } from './modules/users/users.module';
+import { ProductsModule } from './modules/products/products.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Product } from './products/products.entity';
 
 @Module({
   imports: [
@@ -23,7 +21,7 @@ import { Product } from './products/products.entity';
           port: 3306,
           username: 'root',
           password: 'qwerty123',
-          entities: [User, Product],
+          entities: ['dist/**/*.entity{.ts,.js}'],
           host: 'localhost',
           synchronize: true,
         };
