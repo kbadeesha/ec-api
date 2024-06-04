@@ -13,11 +13,6 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user-dto';
 import { UsersService } from '../services/users.service';
-import {
-  ApiBadRequestResponse,
-  ApiCreatedResponse,
-  ApiTags,
-} from '@nestjs/swagger';
 import { User } from '../entities/user.entity';
 import { UpdateUserDto } from '../dtos/update-user-dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
@@ -26,7 +21,6 @@ import { AuthService } from '../services/auth.service';
 import { CurrentUser } from '../decorators/current-user.decorators';
 import { AuthGuard } from 'src/guards/auth.guard';
 
-@ApiTags('User')
 @Controller('auth')
 @Serialize(UserDto)
 export class UsersController {
@@ -50,13 +44,6 @@ export class UsersController {
     session.userId = null;
   }
   @Post('/signup')
-  @ApiCreatedResponse({
-    description: 'User created successfully!',
-    type: User,
-  })
-  @ApiBadRequestResponse({
-    description: 'User create failed!',
-  })
   async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     const user = await this.authService.signUp(body.email, body.password);
     session.userId = user.id;
