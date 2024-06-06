@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { UsersModule } from './modules/users/users.module';
-import { ProductsModule } from './modules/products/products.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -27,18 +25,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   database: 'ecom_db',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: 'qwerty123',
-    //   entities: [User],
-    //   host: 'localhost',
-    //   synchronize: true,
-    // }),
-    UsersModule,
-    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
