@@ -6,11 +6,15 @@ import {
 import { UsersService } from './users.service';
 import { promisify } from 'util';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { JwtAuthService } from './jwt.service';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private readonly jwtAuthService: JwtAuthService,
+  ) {}
 
   async signUp(email: string, password: string) {
     const users = await this.userService.find(email);
@@ -38,6 +42,7 @@ export class AuthService {
     if (storedHash !== hash.toString('hex')) {
       throw new BadRequestException('Bad password');
     }
-    return user;
+    const token = this.jwtAuthService.generateToken({ userId: user.id });
+    return { user, token };
   }
 }
