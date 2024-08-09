@@ -6,13 +6,22 @@ import {
 import { UsersService } from './users.service';
 import { promisify } from 'util';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
+import { UserRole } from './user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 const scrypt = promisify(_scrypt);
 @Injectable()
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-  async signUp(email: string, password: string) {
+  async signUp(
+    email: string,
+    password: string,
+    role: UserRole = UserRole.CUSTOMER,
+  ) {
     const users = await this.userService.find(email);
 
     if (users.length) {
@@ -23,7 +32,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const result = salt + '.' + hash.toString('hex');
 
-    const user = await this.userService.create(email, result);
+    const user = await this.userService.create(email, result, role);
     return user;
   }
 
@@ -38,6 +47,12 @@ export class AuthService {
     if (storedHash !== hash.toString('hex')) {
       throw new BadRequestException('Bad password');
     }
-    return user;
+
+    const payload = { email: user.email, sub: user.id, role: user.role };
+    const access_token = this.jwtService.sign(payload);
+    return {
+      user,
+      access_token,
+    };
   }
 }

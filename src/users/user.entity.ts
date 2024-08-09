@@ -7,6 +7,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+export enum UserRole {
+  CUSTOMER = 'customer',
+  ADMIN = 'admin',
+  SUPER_ADMIN = 'superAdmin',
+}
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -17,6 +22,13 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.CUSTOMER,
+  })
+  role: UserRole;
 
   @AfterInsert()
   logInsert() {

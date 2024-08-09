@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User, UserRole } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   //TODO: cannot create user with the same email
-  create(email: string, password: string) {
-    const user = this.repo.create({ email, password });
+  create(email: string, password: string, role: UserRole) {
+    const user = this.repo.create({ email, password, role });
     return this.repo.save(user);
   }
 
