@@ -4,7 +4,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './core/configs/configurations';
-import { UserModule } from './modules/user/user.module';
+import { UserModule } from './modules/auth/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
