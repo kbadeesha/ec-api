@@ -39,7 +39,7 @@ export class UsersController {
     return user;
   }
 
-  @Post('signout')
+  @Post('/signout')
   signOut(@Session() session: any) {
     session.userId = null;
   }
