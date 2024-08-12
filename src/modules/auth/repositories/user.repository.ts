@@ -1,8 +1,8 @@
-import { CustomRepository } from '../../typeorm-ex/decorators';
 import { BaseRepository, relations } from 'src/core/entity';
 
-import { IUserRepository } from '../interfaces';
 import { User } from '../entities/user.entity';
+import { IUserRepository } from '../interfaces/repositories';
+import { CustomRepository } from 'src/modules/typeorm-ex/decorators';
 
 // noinspection JSUnusedGlobalSymbols
 export const userRelations = [...relations];

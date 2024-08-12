@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './core/config/configuration';
 import { AuthModule } from './modules/auth/auth.module';
+import { SocketModule } from './modules/sockets/socket.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +29,7 @@ import { AuthModule } from './modules/auth/auth.module';
         };
       },
     }),
+    SocketModule,
     AuthModule,
   ],
   controllers: [AppController],
