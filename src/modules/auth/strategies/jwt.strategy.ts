@@ -4,7 +4,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthErrors } from 'src/modules/auth/responses/auth.error.responses';
 import { User } from 'src/modules/auth/entities/user.entity';
 import { UserService } from '../services';
-import configuration from '../../../core/configs/configurations';
+import configuration from '../../../core/config/configuration';
 import { ITokenData } from '../interfaces';
 import { cookieExtractor } from '../utils/auth.extractors';
 import { userRelations } from '../repositories';

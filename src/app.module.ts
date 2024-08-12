@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './core/configs/configurations';
-import { UserModule } from './modules/auth/user.module';
+import configuration from './core/config/configuration';
+import { AuthModule } from './modules/auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,7 +28,7 @@ import { UserModule } from './modules/auth/user.module';
         };
       },
     }),
-    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

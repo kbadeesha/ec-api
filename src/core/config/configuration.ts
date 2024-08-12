@@ -6,6 +6,16 @@ dotenv.config();
 export default () => ({
   app: {
     port: Number(process.env.PORT || process.env.APP_PORT) || 3000,
+    allowedOrigins: String(process.env.APP_ALLOWED_ORIGINS).split(',') || [],
+  },
+  cookies: {
+    secret: process.env.APP_COOKIE_SECRET || 'secret',
+    sameSite: (process.env.APP_COOKIE_SAME_SITE || 'none') as
+      | boolean
+      | 'none'
+      | 'lax'
+      | 'strict',
+    secure: process.env.APP_COOKIE_INSECURE !== 'true',
   },
   database: {
     type: (process.env.DATABASE_TYPE || 'mysql') as DatabaseType,
@@ -22,5 +32,8 @@ export default () => ({
     expiresIn: Number(process.env.JWT_EXP) || 60 * 60 * 24,
     refreshSecret: process.env.JWT_REFRESH_SECRET,
     refreshExpiresIn: Number(process.env.JWT_REFRESH_EXP) || 60 * 60 * 24 * 30,
+  },
+  logs: {
+    fileName: process.env.LOG_FILE || 'errors',
   },
 });
