@@ -17,7 +17,7 @@ import {
 import { Operation } from './entity.enums';
 import { EntityErrors } from './entity.error.responses';
 import { User } from 'src/modules/auth/entities/user.entity';
-import { SocketService } from '../../modules/socket/services';
+import { SocketService } from '../../modules/sockets/services';
 import { EH } from './entity.types';
 
 // noinspection JSUnusedGlobalSymbols
