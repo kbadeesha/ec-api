@@ -4,9 +4,11 @@ import {
   // AfterUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from './enums/roles.enum';
+import { Product } from 'src/products/products.entity';
 
 @Entity()
 export class User {
@@ -34,6 +36,8 @@ export class User {
   @Column()
   address: string;
 
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
   // @AfterInsert()
   // logInsert() {
   //   console.log('Inserted user with id', this.id);
