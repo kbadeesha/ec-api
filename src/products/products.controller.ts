@@ -6,13 +6,15 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { ProductDto } from './dtos/product.dto';
 import { CurrentUser } from 'src/users/decorators/current-user.decorators';
 import { User } from 'src/users/user.entity';
+import { AdminGuard } from 'src/guards/admin.guard';
 
+// UseGuards(AuthGuard, AdminGuard);
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
 
   @Post()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, AdminGuard)
   @Serialize(ProductDto)
   createProduct(@Body() body: CreateProductDto, @CurrentUser() user: User) {
     return this.productService.create(body, user);

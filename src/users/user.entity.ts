@@ -36,6 +36,9 @@ export class User {
   @Column()
   address: string;
 
+  // @Column({ default: true })
+  // isAdmin: boolean;
+
   @OneToMany(() => Product, (product) => product.user)
   products: Product[];
   // @AfterInsert()
