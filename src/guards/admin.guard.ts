@@ -1,20 +1,31 @@
-import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Role } from 'src/users/enums/roles.enum';
-
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { ROLES_KEY } from 'src/users/decorators/role.decorators';
+import { AuthErrors } from 'src/users/responses/auth.error.responses';
+import { User } from 'src/users/user.entity';
+@Injectable()
 export class AdminGuard implements CanActivate {
-  canActivate(context: ExecutionContext) {
+  constructor(private reflector: Reflector) {}
+  canActivate(context: ExecutionContext): boolean {
+    const requiredRoles = this.reflector.getAllAndOverride<any[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (!requiredRoles) {
+      return true; // If no roles are defined, allow access
+    }
     const request = context.switchToHttp().getRequest();
-
     if (!request.currentUser) {
-      return false;
+      throw new ForbiddenException(AuthErrors.AUTH_403_ROLE_FORBIDDEN);
     }
-    if (
-      request.currentUser.role === Role.ADMIN ||
-      request.currentUser.role === Role.SUPER_ADMIN
-    ) {
+    if (requiredRoles.some((role) => request.currentUser.role.includes(role))) {
       return true;
-    } else {
-      return false;
     }
+    throw new ForbiddenException(AuthErrors.AUTH_403_ROLE_FORBIDDEN);
   }
 }

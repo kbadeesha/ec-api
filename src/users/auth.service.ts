@@ -46,4 +46,9 @@ export class AuthService {
     }
     return user;
   }
+
+  async validateUser(userId: number) {
+    const user = await this.userService.findOne(userId);
+    return user || null; // Return null if no user is found
+  }
 }

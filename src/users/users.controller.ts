@@ -21,6 +21,9 @@ import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorators';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { SignInUserDto } from './dtos/signIn-user-dto';
+import { AdminGuard } from 'src/guards/admin.guard';
+import { Role } from './enums/roles.enum';
+import { Roles } from './decorators/role.decorators';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -75,6 +78,8 @@ export class UsersController {
   }
 
   @Delete('/:id')
+  @UseGuards(AdminGuard) // Use the AdminGuard here
+  @Roles(Role.ADMIN)
   removeUser(@Param('id') id: string) {
     return this.userService.remove(parseInt(id));
   }
