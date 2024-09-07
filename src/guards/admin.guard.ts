@@ -24,6 +24,8 @@ export class AdminGuard implements CanActivate {
       throw new ForbiddenException(AuthErrors.AUTH_403_ROLE_FORBIDDEN);
     }
     if (requiredRoles.some((role) => request.currentUser.role.includes(role))) {
+      console.log(requiredRoles);
+      console.log(request.currentUser.role);
       return true;
     }
     throw new ForbiddenException(AuthErrors.AUTH_403_ROLE_FORBIDDEN);

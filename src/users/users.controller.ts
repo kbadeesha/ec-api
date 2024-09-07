@@ -73,13 +73,15 @@ export class UsersController {
   }
 
   @Get()
+  @UseGuards(AdminGuard) // Use the AdminGuard here
+  @Roles(Role.ADMIN)
   findAllUsers(@Query('email') email: string) {
     return this.userService.find(email);
   }
 
   @Delete('/:id')
   @UseGuards(AdminGuard) // Use the AdminGuard here
-  @Roles(Role.ADMIN)
+  @Roles(Role.SUPER_ADMIN)
   removeUser(@Param('id') id: string) {
     return this.userService.remove(parseInt(id));
   }
