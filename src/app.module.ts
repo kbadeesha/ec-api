@@ -7,6 +7,8 @@ import { ProductsModule } from './products/products.module';
 import { User } from './users/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Product } from './products/products.entity';
+import configurations from './core/config/configurations';
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 
 @Module({
   imports: [
@@ -18,27 +20,18 @@ import { Product } from './products/products.entity';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
-          type: 'mysql',
+          type: configurations().database
+            .type as MysqlConnectionOptions['type'],
           database: config.get<string>('DB_NAME'),
-          port: 3306,
-          username: 'root',
-          password: 'qwerty123',
+          port: configurations().database.port,
+          username: configurations().database.user,
+          password: configurations().database.password,
           entities: [User, Product],
-          host: 'localhost',
-          synchronize: true,
+          host: configurations().database.host,
+          synchronize: configurations().database.synchronize,
         };
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   database: 'ecom_db',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: 'qwerty123',
-    //   entities: [User],
-    //   host: 'localhost',
-    //   synchronize: true,
-    // }),
     UsersModule,
     ProductsModule,
   ],
