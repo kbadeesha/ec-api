@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { ProductsModule } from './products/products.module';
-import { User } from './users/user.entity';
+import { ProductsModule } from './ec/modules/products/products.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Product } from './products/products.entity';
+import { Product } from './ec/modules/products/products.entity';
 import configurations from './core/config/configurations';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { User } from './ec/modules/users/user.entity';
+import { UsersModule } from './ec/modules/users/users.module';
 
 @Module({
   imports: [

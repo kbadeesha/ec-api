@@ -1,12 +1,12 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { ProductsService } from './products.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { AuthGuard } from 'src/core/guards/auth.guard';
+import { Serialize } from 'src/core/interceptors/serialize.interceptor';
 import { ProductDto } from './dtos/product.dto';
-import { CurrentUser } from 'src/users/decorators/current-user.decorators';
-import { User } from 'src/users/user.entity';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from 'src/core/guards/admin.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorators';
+import { User } from '../users/user.entity';
 
 // UseGuards(AuthGuard, AdminGuard);
 @Controller('products')

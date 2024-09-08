@@ -5,9 +5,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from 'src/users/decorators/role.decorators';
-import { AuthErrors } from 'src/users/responses/auth.error.responses';
-import { User } from 'src/users/user.entity';
+import { ROLES_KEY } from 'src/ec/modules/users/decorators/role.decorators';
+import { AuthErrors } from 'src/ec/modules/users/responses/auth.error.responses';
 @Injectable()
 export class AdminGuard implements CanActivate {
   constructor(private reflector: Reflector) {}

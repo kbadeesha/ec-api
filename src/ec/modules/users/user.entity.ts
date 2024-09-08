@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from './enums/roles.enum';
-import { Product } from 'src/products/products.entity';
+import { Product } from 'src/ec/modules/products/products.entity';
 
 @Entity()
 export class User {

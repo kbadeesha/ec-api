@@ -15,13 +15,13 @@ import { CreateUserDto } from './dtos/create-user-dto';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user-dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from 'src/core/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorators';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from 'src/core/guards/auth.guard';
 import { SignInUserDto } from './dtos/signIn-user-dto';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from 'src/core/guards/admin.guard';
 import { Role } from './enums/roles.enum';
 import { Roles } from './decorators/role.decorators';
 
