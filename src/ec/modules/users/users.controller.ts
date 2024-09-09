@@ -17,28 +17,25 @@ import { User } from './user.entity';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { Serialize } from 'src/core/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
-import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorators';
-import { AuthGuard } from 'src/core/guards/auth.guard';
+// import { AuthGuard } from 'src/core/guards/auth.guard';
 import { SignInUserDto } from './dtos/signIn-user-dto';
 import { AdminGuard } from 'src/core/guards/admin.guard';
 import { Role } from './enums/roles.enum';
 import { Roles } from './decorators/role.decorators';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
 export class UsersController {
-  constructor(
-    private userService: UsersService,
-    private authService: AuthService,
-  ) {}
+  constructor(private userService: UsersService) {}
 
   // @Get('/whoami')
   // whoAmI(@Session() session: any) {
   //   return this.userService.findOne(session.userId);
   // }
   @Get('/whoami')
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   whoAmI(@CurrentUser() user: User) {
     return user;
   }
@@ -47,25 +44,25 @@ export class UsersController {
   signOut(@Session() session: any) {
     session.userId = null;
   }
-  @Post('/signup')
-  async createUser(
-    @Body() createUserDto: CreateUserDto,
-    @Session() session: any,
-  ) {
-    const user = await this.authService.signUp(createUserDto);
-    session.userId = user.id;
-    return user;
-  }
-  @Post('/signIn')
-  async signIn(@Body() signInUserDto: SignInUserDto, @Session() session: any) {
-    const user = await this.authService.signIn(signInUserDto);
-    session.userId = user.id;
-    return user;
-  }
+  // @Post('/signup')
+  // async createUser(
+  //   @Body() createUserDto: CreateUserDto,
+  //   @Session() session: any,
+  // ) {
+  //   const user = await this.authService.signUp(createUserDto);
+  //   session.userId = user.id;
+  //   return user;
+  // }
+  // @Post('/signIn')
+  // async signIn(@Body() signInUserDto: SignInUserDto, @Session() session: any) {
+  //   const user = await this.authService.signIn(signInUserDto);
+  //   session.userId = user.id;
+  //   return user;
+  // }
 
   @Get('/:id')
   async findUser(@Param('id') id: string) {
-    const user = await this.userService.findOne(parseInt(id));
+    const user = await this.userService.findById(parseInt(id));
     if (!user) {
       throw new NotFoundException('user not found');
     }
@@ -76,7 +73,7 @@ export class UsersController {
   @UseGuards(AdminGuard) // Use the AdminGuard here
   @Roles(Role.ADMIN)
   findAllUsers(@Query('email') email: string) {
-    return this.userService.find(email);
+    return this.userService.findByEmail(email);
   }
 
   @Delete('/:id')

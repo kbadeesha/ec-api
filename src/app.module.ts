@@ -9,6 +9,7 @@ import configurations from './core/config/configurations';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { User } from './ec/modules/users/user.entity';
 import { UsersModule } from './ec/modules/users/users.module';
+import { AuthModule } from './ec/modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UsersModule } from './ec/modules/users/users.module';
     }),
     UsersModule,
     ProductsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
